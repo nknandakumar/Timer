@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+  color-scheme: dark;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  @apply bg-gray-900 text-white 
+}
+
+.preTimer{
+  @apply border-2 border-gray-400 rounded-full cursor-pointer text-2xl h-20 w-20 flex justify-center items-center
+}
+
+.funcButtons{
+  @apply uppercase text-xl p-2 border-2 rounded-md font-bold
+}
