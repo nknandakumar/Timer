@@ -1,15 +1,33 @@
 import { useState, useRef } from "react";
 
+
 const Timer = () => {
   const [time, setTime] = useState({seconds:0,minutes:0,hours:0})
-  const [toggleBtn, setToggleBtn] = useState(true)
   const intervalRef = useRef();
+  const audioRef = useRef();
+  const audio2Ref = useRef();
 
   const startTiming =()=>{
+
     if(!intervalRef.current){
-   
+      
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch((err) => {
+          console.error("Audio playback failed:", err);
+        });
+      }
+      
+
       intervalRef.current = setInterval(() => {
         setTime((prevTime)=>{
+          if (audio2Ref.current) {
+            audio2Ref.current.currentTime = 0; 
+            audio2Ref.current.play().catch((err) => {
+              console.error("Audio 2 playback failed:", err);
+            });
+          }
+          
           let {seconds,minutes,hours} = prevTime ;
           seconds++ 
           if(seconds == 60){
@@ -78,6 +96,8 @@ const Timer = () => {
         Reset
       </button>
     </div>
+     <audio ref={audioRef} src="/assets/start.mp3"></audio>
+     <audio ref={audio2Ref} src="/assets/tic.mp3"></audio>
   </section>
   )
 }
