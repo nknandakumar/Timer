@@ -96,6 +96,7 @@ const Timer = () => {
         Reset
       </button>
     </div>
+    
      <audio ref={audioRef} src="/assets/start.mp3"></audio>
      <audio ref={audio2Ref} src="/assets/tic.mp3"></audio>
   </section>

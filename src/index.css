@@ -15,3 +15,16 @@ body{
 .funcButtons{
   @apply uppercase text-xl p-2 border-2 rounded-md font-bold
 }
+
+.InputNum {
+  @apply w-full p-2 border border-gray-300 rounded-md bg-gray-200 text-black 
+}
+
+
+.inputTd{
+  @apply  px-4 py-2  
+}
+
+.inputTh{
+  @apply px-4 py-2 text-center font-semibold uppercase text-gray-200 text-xl
+}
