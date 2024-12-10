@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export const Timers = () => {
 	const [timer, setTimer] = useState({
@@ -24,33 +24,41 @@ export const Timers = () => {
 		const { value, name } = e.target;
 
 		const ValidationResult = Validation(value, name);
-		setError(ValidationResult);
+	setError(ValidationResult);
 		if (!ValidationResult) {
-			setInputTime((prevInputTime) => ({
+      
+		
+      setInputTime((prevInputTime) => ({
 				...prevInputTime,
 				[name]: value,
 			}));
-		}
+    }
 	};
 
 	//Validation
 	const Validation = (value, name) => {
 	
-		if (value < 0) {
+		if (!value) {
 			return `Negative values are not allowed`;
 		}
-		if (value > maxNum) {
+		if ( name !== "hour" && value > maxNum) {
 			return `${name} must be between 0 and ${maxNum} `;
 		}
+    if (name === "hour" && value >12) {
+        return `Hour must be between 0 and 12`
+    }
 		return "";
 	};
 
 	//set number to timer
 	const handleSubmit = (e) => {
+    const {hour,minutes,seconds} = inputTime ;
 		e.preventDefault();
-		setTimer(inputTime);
-		console.log(inputTime);
-
+		setTimer({
+      hour :parseInt(hour ? hour : 0) ,
+      minutes :parseInt(minutes ? minutes :0),
+      seconds:parseInt(seconds ?seconds :0),
+    });
 		setInputTime({
 			hour: "",
 			minutes: "",
@@ -65,7 +73,7 @@ export const Timers = () => {
 		intervalRef.current = setInterval(() => {
 			setTimer((prevTime) => {
 				const { hour, minutes, seconds } = prevTime;
-				if ((hour === 0, minutes == 0, seconds === 0)) {
+				if ((hour === 0 && minutes == 0 && seconds === 0)) {
 					clearInterval(intervalRef.current);
           //Time Up music
           if(endAudioRef.current){
@@ -80,7 +88,7 @@ export const Timers = () => {
 				if (seconds > 0) return { ...prevTime, seconds: seconds - 1 };
 				if (minutes > 0)
 					return { ...prevTime, minutes: minutes - 1, seconds: 59 };
-				if (hour > 0) return { ...prevTime, hour: hour - 1, minutes: 59 };
+				if (hour > 0) return { ...prevTime, hour: hour - 1, minutes: 59,seconds :59 };
 			});
 		}, 1000);
 	};
@@ -94,6 +102,11 @@ export const Timers = () => {
 		stop();
 		setTimer({ hour: 0, minutes: 0, seconds: 0 });
 	};
+   
+  useEffect(()=>{
+   return clearInterval(intervalRef.current)
+  },[])
+ 
 
 	let { hour, minutes, seconds } = timer;
 	return (
@@ -123,13 +136,14 @@ export const Timers = () => {
 					<h2 className="text-2xl  font-sans ">Set the Time : </h2>
 
 					<table className="  w-full max-w-sm mx-auto p-6 border border-gray-300 rounded-xl shadow-lg ">
-						<thead className="">
+					<thead>
 							<tr className=" my-2">
 								<th className="inputTh">Hour</th>
 								<th className="inputTh">Minute</th>
 								<th className="inputTh">Second</th>
 							</tr>
-						</thead>
+              </thead>
+              <tbody>
 						<tr className=" border-t ">
 							<td className=" inputTd">
 								{" "}
@@ -170,10 +184,11 @@ export const Timers = () => {
                   placeholder="00"
 									value={inputTime.seconds}
 									onChange={handleInputTime}
-									required
+						
 								/>
 							</td>
 						</tr>
+            </tbody>
 					</table>
 					{error && <p className="text-red-500"> {error} </p>}
 
