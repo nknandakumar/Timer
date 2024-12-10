@@ -5,8 +5,9 @@ import { Timers } from "./Timers"
 const App = () => {
   return (
     <div> 
+        <Timers/>
        <Timer/>
-       <Timers/>
+     
     </div>
   )
 }
